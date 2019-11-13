@@ -56,6 +56,12 @@ public class UsersController {
     public Users getProfile(Principal principal) {
         return usersServiceImp.getUser(principal);
     }
+
+    @GetMapping(path = "/getUser/{id}", produces = "application/json")
+    @ResponseBody
+    public String getUserById(@PathVariable Long id) {
+        return usersServiceImp.getUserById(id);
+    }
 }
 
 

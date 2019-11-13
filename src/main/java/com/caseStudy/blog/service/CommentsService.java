@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -29,17 +29,18 @@ public class CommentsService {
 
     public List<Comments> getComments(Long id) {
         Post post = postRepository.findById(id).get();
-        return commentsRepository.findAllByPost(post);
+        return commentsRepository.findAllByPostOrderByDateDesc(post);
     }
 
-    public Comments addComments(Comments comments, Principal principal, Long id) {
+    public List<Comments> addComments(Comments comments, Principal principal, Long id) {
         Users users = usersRepository.findByEmail(principal.getName()).get();
         Post post = postRepository.findById(id).get();
         comments.setPost(post);
         comments.setUsers(users);
-        comments.setDate(LocalDateTime.now());
+        comments.setDate(LocalDate.now());
         comments.setLikes(0L);
-        return commentsRepository.saveAndFlush(comments);
+        commentsRepository.saveAndFlush(comments);
+        return commentsRepository.findAllByPostOrderByDateDesc(post);
     }
 
     public List<Comments> deleteComments(Long id) {

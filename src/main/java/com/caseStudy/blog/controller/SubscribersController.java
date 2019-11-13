@@ -40,4 +40,9 @@ public class SubscribersController {
     public List<Subscribers> unSubscribe(Principal principal, @RequestParam Long id) {
         return subscribersService.unSubscribe(principal, id);
     }
+
+    @GetMapping("/isSubscribed/{id}")
+    public Boolean getSubscription(Principal principal, @PathVariable Long id) {
+        return subscribersService.isSubscribe(principal, id);
+    }
 }

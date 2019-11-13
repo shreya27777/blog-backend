@@ -6,18 +6,18 @@ import java.time.LocalDate;
 
 @Entity
 public class Post implements Serializable {
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-   @Column(nullable = false)
+    @Column(nullable = false)
     private String content;
-   @Column(nullable = false)
+    @Column(nullable = false)
     private String description;
-   @Column(nullable = false)
+    @Column(nullable = false)
     private String title;
-   @Column(nullable = false)
-    private Long authorId;
-   @Column(nullable = false)
+    @OneToOne
+    private Users author;
+    @Column(nullable = false)
     private LocalDate date;
     @Column(nullable = false)
     private String image;
@@ -31,6 +31,7 @@ public class Post implements Serializable {
     private Long likes;
     @Column(nullable = false)
     private Long disLikes;
+
     public Post() {
     }
 
@@ -66,12 +67,12 @@ public class Post implements Serializable {
         this.title = title;
     }
 
-    public Long getAuthorId() {
-        return authorId;
+    public Users getAuthor() {
+        return author;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public void setAuthor(Users author) {
+        this.author = author;
     }
 
     public LocalDate getDate() {

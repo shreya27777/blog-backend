@@ -34,9 +34,10 @@ public class PostController {
 
     @GetMapping(value = "/getById/{id}")
     @ResponseBody
-    public List<Post> getById(@PathVariable Long id) {
+    public Post getById(@PathVariable Long id) {
         return postService.getPostByUser(id);
     }
+
     @GetMapping(value = "/getByTitle/{title}")
     @ResponseBody
     public List<Post> getByTitle(@PathVariable String title) {
@@ -51,9 +52,9 @@ public class PostController {
 
     @GetMapping(value = "/getByDate/{year}/{month}/{day}")
     @ResponseBody
-    public List<Post> getByDate(@PathVariable int year,@PathVariable int month,
+    public List<Post> getByDate(@PathVariable int year, @PathVariable int month,
                                 @PathVariable int day) {
-        return postService.getPostByDate(year,month,day);
+        return postService.getPostByDate(year, month, day);
     }
 
     @PostMapping(value = "/addPost")
@@ -68,4 +69,22 @@ public class PostController {
         return postService.deletePost(id);
     }
 
+    @PostMapping(path = "/updatePost/{id}")
+    @ResponseBody
+    public Post updateUser(@PathVariable Long id, @RequestBody Post post) {
+        return postService.updatePost(id, post);
+    }
+
+
+    @PostMapping(path = "/viewPost/{id}")
+    @ResponseBody
+    public void viewPost(@PathVariable Long id) {
+        postService.viewPost(id);
+    }
+
+    @GetMapping(value = "/getPopular")
+    @ResponseBody
+    public List<Post> getPopular() {
+        return postService.popular();
+    }
 }

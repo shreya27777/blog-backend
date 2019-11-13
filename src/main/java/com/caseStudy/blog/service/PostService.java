@@ -38,12 +38,11 @@ public class PostService {
 
     public List<Post> getMyPost(Principal principal) {
         Users users = usersRepository.findByEmail(principal.getName()).get();
-        return postRepository.findAllByAuthorId(users.getUserId());
-
+        return postRepository.findAllByAuthor(users);
     }
 
     public List<Post> getPostByTitle(String title) {
-        return postRepository.findAllByTitleContainingOrContentContainingIgnoreCase(title,title);
+        return postRepository.findAllByTitleContainingOrContentContainingIgnoreCase(title, title);
     }
 
     public List<Post> getPostByDate(int year, int month, int day) {
@@ -52,8 +51,8 @@ public class PostService {
     }
 
 
-    public List<Post> getPostByUser(Long id) {
-        return postRepository.findAllByAuthorId(id);
+    public Post getPostByUser(Long id) {
+        return postRepository.findById(id).get();
     }
 
     public Post addPost(Post post, Principal principal) {
@@ -62,7 +61,7 @@ public class PostService {
         post.setDate(LocalDate.now());
         post.setLikes(0L);
         post.setDisLikes(0L);
-        post.setAuthorId(user.getUserId());
+        post.setAuthor(user);
         return postRepository.saveAndFlush(post);
     }
 
@@ -71,10 +70,27 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public Post viewPost(Long id) {
+    public void viewPost(Long id) {
         Post post = postRepository.findById(id).get();
         post.setVisited(post.getVisited() + 1);
         postRepository.saveAndFlush(post);
-        return post;
     }
+
+    public Post updatePost(Long id, Post updatedPost) {
+        Post post = postRepository.findById(id).get();
+        post.setCategory(updatedPost.getCategory());
+        post.setContent(updatedPost.getContent());
+        post.setImage(updatedPost.getImage());
+        post.setTitle(updatedPost.getTitle());
+        post.setIsPrivate(updatedPost.getIsPrivate());
+        post.setDescription(updatedPost.getDescription());
+        postRepository.saveAndFlush(post);
+        return postRepository.findById(id).get();
+    }
+
+    public List<Post> popular() {
+        return postRepository.findTop5ByOrderByVisitedDesc();
+    }
+
+
 }

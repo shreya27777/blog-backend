@@ -3,7 +3,7 @@ package com.caseStudy.blog.model;
 import javax.persistence.*;
 import java.io.Serializable;
 @Entity
-public class Groups implements Serializable {
+public class UserGroups implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -16,7 +16,7 @@ public class Groups implements Serializable {
     private static final Integer MAX=256;
 
 
-    public Groups() {
+    public UserGroups() {
     }
 
     public long getId() {

@@ -14,4 +14,5 @@ public interface SubscribersRepository extends JpaRepository<Subscribers,Long> {
     List<Subscribers> findAllBySubscribers(Users users);
     void deleteAllBySubscribers(Users users);
     Optional<Subscribers> findByAuthorsAndSubscribers(Users users, Users author);
+    Boolean existsBySubscribersAndAuthors(Users users, Users author);
 }

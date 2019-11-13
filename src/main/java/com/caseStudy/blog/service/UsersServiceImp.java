@@ -1,5 +1,6 @@
 package com.caseStudy.blog.service;
 
+import com.caseStudy.blog.model.Post;
 import com.caseStudy.blog.model.Users;
 import com.caseStudy.blog.repository.PostRepository;
 import com.caseStudy.blog.repository.SubscribersRepository;
@@ -51,7 +52,7 @@ public class UsersServiceImp {
     public List<Users> removeUser(Long id) {
         Users users1 = usersRepository.findByUserId(id).get();
         subscribersRepository.deleteAllBySubscribers(users1);
-        postRepository.deleteAllByAuthorId(users1.getUserId());
+        postRepository.deleteAllByAuthor(users1);
         usersRepository.delete(users1);
         return usersRepository.findAll();
     }
@@ -96,5 +97,11 @@ public class UsersServiceImp {
         }
         usersRepository.saveAndFlush(user);
         return usersRepository.findAll();
+    }
+
+    public String getUserById(Long id) {
+        Post post = postRepository.findById(id).get();
+        Users users = post.getAuthor();
+        return "\"" + users.getName() + "\"";
     }
 }

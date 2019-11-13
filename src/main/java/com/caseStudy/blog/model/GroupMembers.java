@@ -9,7 +9,7 @@ public class GroupMembers implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private Groups groups;
+    private UserGroups userGroups;
     @ManyToOne
     private Users members;
 
@@ -25,12 +25,12 @@ public class GroupMembers implements Serializable {
         this.id = id;
     }
 
-    public Groups getGroups() {
-        return groups;
+    public UserGroups getUserGroups() {
+        return userGroups;
     }
 
-    public void setGroups(Groups groups) {
-        this.groups = groups;
+    public void setUserGroups(UserGroups userGroups) {
+        this.userGroups = userGroups;
     }
 
     public Users getMembers() {

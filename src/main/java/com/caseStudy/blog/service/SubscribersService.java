@@ -41,7 +41,7 @@ public class SubscribersService {
             Subscribers s = new Subscribers();
             s.setAuthors(author);
             s.setSubscribers(users);
-            author.setSubscribers(author.getSubscribers()+1);
+            author.setSubscribers(author.getSubscribers() + 1);
             subscribersRepository.saveAndFlush(s);
             usersRepository.saveAndFlush(author);
         }
@@ -51,14 +51,22 @@ public class SubscribersService {
     public List<Subscribers> unSubscribe(Principal principal, Long id) {
         Users users = usersRepository.findByEmail(principal.getName()).get();
         Users author = usersRepository.findByUserId(id).get();
-        Optional<Subscribers> subscribers=subscribersRepository.findByAuthorsAndSubscribers
-                (author,users);
+        Optional<Subscribers> subscribers = subscribersRepository.findByAuthorsAndSubscribers
+                (author, users);
         if (!users.equals(author) && subscribers.isPresent()) {
-           subscribersRepository.delete(subscribers.get());
-            author.setSubscribers(author.getSubscribers()-1);
+            subscribersRepository.delete(subscribers.get());
+            author.setSubscribers(author.getSubscribers() - 1);
             usersRepository.saveAndFlush(author);
         }
 
         return subscribersRepository.findAllBySubscribers(users);
     }
+
+    public Boolean isSubscribe(Principal principal, Long id) {
+        Users users = usersRepository.findByEmail(principal.getName()).get();
+        Users author = usersRepository.findByUserId(id).get();
+        return subscribersRepository.existsBySubscribersAndAuthors(users, author);
+    }
+
+
 }

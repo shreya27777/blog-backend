@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/comments")
 public class CommentsController {
@@ -26,7 +26,7 @@ public class CommentsController {
 
     @PostMapping(value = "/addComments/{id}")
     @ResponseBody
-    public Comments addComments(@PathVariable Long id, @RequestBody Comments comments,
+    public List<Comments> addComments(@PathVariable Long id, @RequestBody Comments comments,
                                 Principal principal) {
         return commentsService.addComments(comments, principal, id);
     }

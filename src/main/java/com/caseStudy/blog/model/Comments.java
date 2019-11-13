@@ -2,7 +2,8 @@ package com.caseStudy.blog.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 @Entity
 public class Comments implements Serializable {
@@ -12,7 +13,7 @@ public class Comments implements Serializable {
     @Column(nullable = false)
     private String content;
     @Column(nullable = false)
-    private LocalDateTime date;
+    private LocalDate date;
     @Column(nullable = false)
     private Long likes;
     @ManyToOne
@@ -39,11 +40,11 @@ public class Comments implements Serializable {
         this.content = content;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
