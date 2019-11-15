@@ -44,6 +44,12 @@ public class PostController {
         return postService.getPostByTitle(title);
     }
 
+    @GetMapping(value = "/getByDescription/{description}")
+    @ResponseBody
+    public List<Post> getByDescription(@PathVariable String description) {
+        return postService.getPostByDescription(description);
+    }
+
     @GetMapping(value = "/getMyPosts")
     @ResponseBody
     public List<Post> getMyPosts(Principal principal) {
@@ -86,5 +92,16 @@ public class PostController {
     @ResponseBody
     public List<Post> getPopular() {
         return postService.popular();
+    }
+
+    @GetMapping(value = "/getAllPostofUser/{id}")
+    @ResponseBody
+    public List<Post> getAllPostofUser(@PathVariable Long id) {
+        return postService.getAllPostofUser(id);
+    }
+
+    @GetMapping(path = "/getByAuthorName/{name}")
+    public List<Post> findAllByAuthorName(@PathVariable String name) {
+        return postService.findAllByAuthorName(name);
     }
 }

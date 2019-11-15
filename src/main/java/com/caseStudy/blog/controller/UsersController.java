@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -24,7 +25,7 @@ public class UsersController {
     }
 
     @PostMapping(path = "/signup")
-    public Users addUser(@RequestBody Users users) {
+    public Boolean addUser(@RequestBody Users users) {
         return usersServiceImp.signUpUser(users);
     }
 
@@ -37,7 +38,8 @@ public class UsersController {
 
     @GetMapping(path = "/login")
     @ResponseBody
-    public String getRole(Principal principal) { return "\""+usersServiceImp.getRole(principal)+"\"";
+    public String getRole(Principal principal) {
+        return "\"" + usersServiceImp.getRole(principal) + "\"";
     }
 
     @GetMapping(path = "/logout")
@@ -62,6 +64,18 @@ public class UsersController {
     public String getUserById(@PathVariable Long id) {
         return usersServiceImp.getUserById(id);
     }
+
+    @GetMapping(path = "/getById/{id}", produces = "application/json")
+    @ResponseBody
+    public Users getUserObjectById(@PathVariable Long id) {
+        return usersServiceImp.getUserObjectById(id);
+    }
+
+    @GetMapping("/getByName/{name}")
+    public List<Users> getAllByName(@PathVariable String name) {
+        return usersServiceImp.getAllByName(name);
+    }
+
 }
 
 

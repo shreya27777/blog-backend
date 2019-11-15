@@ -1,5 +1,6 @@
 package com.caseStudy.blog.service;
 
+import com.caseStudy.blog.model.Comments;
 import com.caseStudy.blog.model.Post;
 import com.caseStudy.blog.model.Users;
 import com.caseStudy.blog.repository.CommentsRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,11 +30,16 @@ public class PostService {
     }
 
     public List<Post> getAllPost() {
-        return postRepository.findAll();
+        return postRepository.findAllByIsPrivate(0);
+    }
+
+    public List<Post> getAllPostofUser(Long id) {
+        Users users = usersRepository.findByUserId(id).get();
+        return postRepository.findAllByAuthor(users);
     }
 
     public List<Post> getPostByCategory(String category) {
-        return postRepository.findAllByCategory(category);
+        return postRepository.findAllByCategoryAndIsPrivate(category, 0);
     }
 
 
@@ -42,12 +49,16 @@ public class PostService {
     }
 
     public List<Post> getPostByTitle(String title) {
-        return postRepository.findAllByTitleContainingOrContentContainingIgnoreCase(title, title);
+        return postRepository.findAllByTitleContainingIgnoreCaseAndIsPrivate(title, 0);
+    }
+
+    public List<Post> getPostByDescription(String description) {
+        return postRepository.findAllByDescriptionContainingIgnoreCaseAndIsPrivate(description, 0);
     }
 
     public List<Post> getPostByDate(int year, int month, int day) {
         LocalDate l = LocalDate.of(year, month, day);
-        return postRepository.findAllByDate(l);
+        return postRepository.findAllByDateAndIsPrivate(l, 0);
     }
 
 
@@ -66,8 +77,12 @@ public class PostService {
     }
 
     public List<Post> deletePost(Long id) {
-        postRepository.deleteById(id);
-        return postRepository.findAll();
+        Post post = postRepository.findById(id).get();
+        for (Comments comments : commentsRepository.findAllByPostOrderByDateDesc(post)) {
+            commentsRepository.delete(comments);
+        }
+        postRepository.delete(post);
+        return postRepository.findAllByIsPrivate(0);
     }
 
     public void viewPost(Long id) {
@@ -89,8 +104,20 @@ public class PostService {
     }
 
     public List<Post> popular() {
-        return postRepository.findTop5ByOrderByVisitedDesc();
+        return postRepository.findTop5ByIsPrivateOrderByVisitedDesc(0);
     }
 
+    public List<Post> findAllByAuthorName(String name) {
+        List<Users> usersList = usersRepository.findAllByNameContainingIgnoreCase(name);
+        List<Post> postsList = new ArrayList<>();
+        for (Users users : usersList) {
+            postsList.addAll(postRepository.findAllByAuthorAndIsPrivateOrderByDateDesc(users, 0));
+        }
+        return postsList;
+    }
+
+//    public List<Post> findAllPosts(Principal principal) {
+//        List<Post> postList
+//    }
 
 }

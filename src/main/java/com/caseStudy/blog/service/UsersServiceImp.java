@@ -33,15 +33,15 @@ public class UsersServiceImp {
         return "invalid credentials";
     }
 
-    public Users signUpUser(Users users) {
+    public Boolean signUpUser(Users users) {
         if (!usersRepository.existsByEmail(users.getEmail())) {
             users.setRole("user");
             users.setActive(1);
             users.setSubscribers(0L);
             usersRepository.saveAndFlush(users);
-            return users;
+            return true;
         }
-        return null;
+        return false;
     }
 
     public String removeAllUsers() {
@@ -103,5 +103,18 @@ public class UsersServiceImp {
         Post post = postRepository.findById(id).get();
         Users users = post.getAuthor();
         return "\"" + users.getName() + "\"";
+    }
+
+    public List<Users> getByName(String name) {
+        return usersRepository.findByName(name);
+    }
+
+    public List<Users> getAllByName(String name) {
+        return usersRepository.findAllByNameContainingIgnoreCase(name);
+    }
+
+    public Users getUserObjectById(Long id) {
+        Users users = usersRepository.findByUserId(id).get();
+        return users;
     }
 }

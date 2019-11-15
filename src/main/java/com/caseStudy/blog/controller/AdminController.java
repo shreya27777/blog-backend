@@ -19,7 +19,7 @@ public class AdminController {
     }
 
     @PostMapping(path = "/addUser")
-    public Users addUser(@RequestBody Users users) {
+    public Boolean addUser(@RequestBody Users users) {
         users.setRole("user");
         users.setActive(1);
         return usersServiceImp.signUpUser(users);
