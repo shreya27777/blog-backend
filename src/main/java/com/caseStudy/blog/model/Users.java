@@ -14,6 +14,10 @@ public class Users implements Serializable {
     private String name;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    private String bio;
+    @Column(nullable = false)
+    private Long mobile;
     @Column(columnDefinition = "varchar(255) default 'user'")
     private String role;
     @Column(columnDefinition = "integer default 1")
@@ -78,5 +82,21 @@ public class Users implements Serializable {
 
     public void setSubscribers(Long subscribers) {
         this.subscribers = subscribers;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public Long getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(Long mobile) {
+        this.mobile = mobile;
     }
 }

@@ -75,6 +75,8 @@ public class UsersServiceImp {
         updatedUser.setEmail(users.getEmail());
         updatedUser.setPassword(users.getPassword());
         updatedUser.setName(users.getName());
+        updatedUser.setMobile(users.getMobile());
+        updatedUser.setBio(users.getBio());
         usersRepository.saveAndFlush(updatedUser);
         return updatedUser;
     }
